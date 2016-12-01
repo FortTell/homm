@@ -35,7 +35,7 @@ namespace HoMM
                     .ToList();
                 var targets = preferredEnemyOrder.Where(u => tempArmyDef[u] > 0);
                 if (targets.Count() == 0)
-                    return tempArmyDef;
+                    break;
                 var target = targets.First();
                 int kills = ResolveAttack(attStack, new KeyValuePair<UnitType, int>(target, tempArmyDef[target]), atkDmgMod);
                 tempArmyDef[target] -= kills;
@@ -46,7 +46,7 @@ namespace HoMM
         private static int ResolveAttack(KeyValuePair<UnitType, int> attacker, KeyValuePair<UnitType, int> defender, double atkDmgMod)
         {
             double attackerDamage = UnitConstants.CombatPower[attacker.Key] * attacker.Value
-                * UnitConstants.CombatMod[attacker.Key][defender.Key] * atkDmgMod;
+                * UnitConstants.CombatMod[attacker.Key][defender.Key] * (1 + atkDmgMod);
             int killedUnits = (int)Math.Floor(attackerDamage / UnitConstants.CombatPower[defender.Key]);
             return Math.Min(killedUnits, defender.Value);
         }

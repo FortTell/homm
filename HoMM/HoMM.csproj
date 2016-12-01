@@ -96,6 +96,7 @@
     <Compile Include="Common\IEnumerableExtensions.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Tile\TileObjects\Wall.cs" />
     <Compile Include="Model\Units\UnitConstants.cs" />
     <Compile Include="Hero\HommCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,7 +106,6 @@
     <Compile Include="Model\Tile\TileObjects\Dwelling.cs" />
     <Compile Include="Model\Tile\TileObjects\CapturableObject.cs" />
     <Compile Include="Model\Tile\TileObjects\Garrison.cs" />
-    <Compile Include="Model\Tile\TileObjects\Impassable.cs" />
     <Compile Include="Model\Tile\TileObjects\Mine.cs" />
     <Compile Include="Model\Tile\TileObjects\NeutralArmy.cs" />
     <Compile Include="Model\Tile\TileObjects\ResourcePile.cs" />

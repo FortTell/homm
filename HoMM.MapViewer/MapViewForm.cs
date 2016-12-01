@@ -119,12 +119,12 @@ namespace HoMM.MapViewer
         private Color GetColor(TileObject obj, TileTerrain terrain, 
             bool drawObjects, bool drawWalls, bool drawTerrain)
         {
-            if (obj as Impassable != null && drawWalls)
-                return Color.DarkSlateGray;
-
             if (obj as Mine != null && drawObjects)
                 return resourceColor[(obj as Mine).Resource];
 
+            if (obj != null && !obj.IsPassable && drawWalls)
+                return Color.DarkSlateGray;
+            
             if (terrainColor.ContainsKey(terrain) && drawTerrain)
                 return terrainColor[terrain];
 

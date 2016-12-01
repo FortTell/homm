@@ -3,6 +3,8 @@
     public class Mine : CapturableObject
     {
         public Resource Resource { get; private set; }
+        
+        public override bool IsPassable => false;
 
         public int Yield
         {

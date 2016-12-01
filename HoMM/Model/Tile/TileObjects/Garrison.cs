@@ -4,6 +4,8 @@ namespace HoMM
 {
     public class Garrison : CapturableObject
     {
+        public override bool IsPassable => true;
+
         public Dictionary<Unit, int> guards;
         public Garrison(Dictionary<Unit, int> guards, Vector2i location) : base(location)
         {

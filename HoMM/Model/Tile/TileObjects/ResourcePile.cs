@@ -7,6 +7,8 @@ namespace HoMM
         public readonly Resource resource;
         public readonly int quantity;
 
+        public override bool IsPassable => true;
+
         public ResourcePile(Resource resource, int quantity, Vector2i location) : base(location)
         {
             if (quantity <= 0)

@@ -5,6 +5,8 @@
         public readonly Unit Unit;
         public CapturableObject GuardedObject { get; private set; }
         public int Quantity { get; private set; }
+        
+        public override bool IsPassable => true;
 
         public NeutralArmy(Unit unit, int quantity, Vector2i location) : base(location)
         {

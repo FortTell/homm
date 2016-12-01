@@ -7,6 +7,8 @@ namespace HoMM
     {
         public string unityID;
         public readonly Vector2i location;
+        
+        public abstract bool IsPassable { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

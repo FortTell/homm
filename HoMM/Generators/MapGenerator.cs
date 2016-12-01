@@ -44,8 +44,8 @@ namespace HoMM.Generators
                 (m, g) => m.Merge(g.Spawn(maze)));
 
             var tiles = Location.Square(mapSize)
-                .Select(s => new Tile(s.X, s.Y, terrainMap[s],
-                    maze[s] == MazeCell.Empty ? entities[s] : new Impassable(s)));
+                .Select(s => new Tile(s, terrainMap[s],
+                    maze[s] == MazeCell.Empty ? entities[s] : new Wall(s)));
 
             return new Map(size, size, tiles);
         }

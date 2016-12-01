@@ -4,6 +4,8 @@ namespace HoMM
 {
     public class Dwelling : CapturableObject
     {
+        public override bool IsPassable => true;
+
         public Unit Recruit { get; private set; }
         public int AvailableUnits { get; private set; }
 

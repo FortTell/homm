@@ -22,6 +22,15 @@ namespace HoMM
             Players = playerNames.Select(name => new Player(name, Map)).ToArray();
         }
 
+        public void UpdateTick(params Vector2i[] playerPositions)
+        {
+            if (playerPositions.Length != Players.Length)
+                throw new ArgumentException("wrong number of player positions!");
+
+            for (int i = 0; i < Players.Length; i++)
+                Update(Players[i], playerPositions[i]);
+        }
+
         public void Update(Player player, Vector2i newLocation)
         {
             if (!Players.Contains(player))

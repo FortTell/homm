@@ -20,12 +20,14 @@ namespace HoMM
         
         public static T Argmin<T>(this ICollection<T> source, Func<T, double> selector)
         {
-            return source.Where(x => selector(x) == source.Min(selector)).FirstOrDefault();
+            var min = source.Min(selector);
+            return source.Where(x => selector(x) == min).First();
         }
         
         public static T Argmax<T>(this ICollection<T> source, Func<T, double> selector)
         {
-            return source.Where(x => selector(x) == source.Max(selector)).FirstOrDefault();
+            var max = source.Max(selector);
+            return source.Where(x => selector(x) == max).First();
         }
     }
 }

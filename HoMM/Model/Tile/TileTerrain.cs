@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HoMM
 {
@@ -33,11 +34,19 @@ namespace HoMM
             { 'R', Road },
             { 'S', Snow }
         };
-
+        
         public static TileTerrain Parse(char c)
         {
             if (terrainParser.ContainsKey(c)) return terrainParser[c];
             throw new ArgumentException("Unknown terrain type!");
+        }
+
+        static Dictionary<TileTerrain, char> terrainEncoder = terrainParser
+            .ToDictionary(kv => kv.Value, kv => kv.Key);
+
+        public char ToChar()
+        {
+            return terrainEncoder[this];
         }
     }
 }

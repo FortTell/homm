@@ -14,10 +14,16 @@ namespace HoMM.Hero
         IHexMovRobot
     {
         public override IEnumerable<IUnit> Units { get; }
-
-        public Vector2i Location { get; set; }
+        
+        public Player Player { get; }
         public double VelocityModifier { get; }
 
+        public Vector2i Location
+        {
+            get { return Player.Location; }
+            set { World.Round.Update(Player, value); }
+        }
+        
         public HeroRobot()
         {
             Units = new List<IUnit>

@@ -12,7 +12,7 @@ namespace HoMM.World
     {
         public IHommEngine HommEngine { get; private set; }
         public ICommonEngine CommonEngine { get; private set; }
-        public Map Map { get; private set; }
+        public Round Round { get; private set; }
         public Random Random { get; private set; }
 
         public override void CreateWorld()
@@ -20,7 +20,14 @@ namespace HoMM.World
             Random = new Random(WorldState.Seed);
             HommEngine = GetEngine<IHommEngine>();
             CommonEngine = GetEngine<ICommonEngine>();
-            Map = MapHelper.CreateMap(Random);
+            
+            var map = MapHelper.CreateMap(Random);
+            var players = new Player[] {
+                new Player(TwoPlayersId.Left, map),
+                new Player(TwoPlayersId.Right, map),
+            };
+
+            Round = new Round(map, players);
         }
     }
 }

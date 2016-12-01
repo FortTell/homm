@@ -24,52 +24,52 @@ namespace HexModelTesting
         public void TestMineCapturing()
         {
             round.UpdateTick(new Vector2i[] { new Vector2i(1, 0), new Vector2i(2, 1) });
-            var mine = (Mine)round.map[1, 0].tileObject;
-            Assert.That(mine.Owner == round.players[0]);
+            var mine = (Mine)round.Map[1, 0].tileObject;
+            Assert.That(mine.Owner == round.Players[0]);
             Assert.That(mine.Resource == Resource.Rubles);
             round.DailyTick();
-            Assert.AreEqual(round.players[0].CheckResourceAmount(Resource.Rubles), 1000);
+            Assert.AreEqual(round.Players[0].CheckResourceAmount(Resource.Rubles), 1000);
         }
 
         [Test]
         public void TestResGathering()
         {
             round.UpdateTick(new Vector2i[] { new Vector2i(0, 0), new Vector2i(1, 1) });
-            Assert.That(round.players[1].CheckResourceAmount(Resource.Rubles) == 100);
+            Assert.That(round.Players[1].CheckResourceAmount(Resource.Rubles) == 100);
             //Assert.That(round.map[1, 1].tileObject == null);
         }
 
         [Test]
         public void TestObjectRecapture()
         {
-            var obj = (CapturableObject)round.map[2, 1].tileObject;
-            Assert.That(obj.Owner == round.players[1]);
+            var obj = (CapturableObject)round.Map[2, 1].tileObject;
+            Assert.That(obj.Owner == round.Players[1]);
             round.UpdateTick(new Vector2i[] { new Vector2i(2, 1), new Vector2i(0, 0) });
-            Assert.That(obj.Owner == round.players[0]);
+            Assert.That(obj.Owner == round.Players[0]);
         }
 
         #region player.TryBuyUnits testing
         [Test]
         public void PurchaseFailsWhenNotAtDwelling()
         {
-            Assert.False(round.players[0].TryBuyUnits(1));
-            Assert.That(round.players[0].Army[UnitType.Ranged] == 0);
+            Assert.False(round.Players[0].TryBuyUnits(1));
+            Assert.That(round.Players[0].Army[UnitType.Ranged] == 0);
         }
 
         [Test]
         public void PurchaseThrowsWhenAskedForNegativeUnits()
         {
-            Assert.Throws<ArgumentException>(() => round.players[0].TryBuyUnits(-1));
+            Assert.Throws<ArgumentException>(() => round.Players[0].TryBuyUnits(-1));
         }
 
         [Test]
         public void PurchaseFailsWhenNoAvailableUnits()
         {
-            var p = round.players[0];
+            var p = round.Players[0];
             p.GainResources(Resource.Rubles, 50);
             p.GainResources(Resource.Wood, 1);
             Assert.False(p.TryBuyUnits(1));
-            Assert.That(round.players[0].Army[UnitType.Ranged] == 0);
+            Assert.That(round.Players[0].Army[UnitType.Ranged] == 0);
         }
 
         [Test]
@@ -77,9 +77,9 @@ namespace HexModelTesting
         {
             for (int i = 0; i < 7; i++)
                 round.DailyTick();
-            var dwelling = (Dwelling)round.map[2, 1].tileObject;
+            var dwelling = (Dwelling)round.Map[2, 1].tileObject;
             Assert.That(dwelling.AvailableUnits == 16);
-            Assert.False(round.players[0].TryBuyUnits(1));
+            Assert.False(round.Players[0].TryBuyUnits(1));
         }
         #endregion
     }

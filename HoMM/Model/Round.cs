@@ -6,31 +6,32 @@ namespace HoMM
 {
     public class Round
     {
-        public Map map;
-        public List<Player> players;
-        public int daysPassed;
+        public Map Map { get; }
+        public Player[] Players { get; }
+        public int DaysPassed { get; private set; } = 0;
 
-        public Round(string filename, string[] playerNames)
+        public Round(Map map, params Player[] players)
         {
-            map = new Map(filename);
-            players = playerNames.Select(name => new Player(name, map)).ToList();
-            daysPassed = 0;
+            Map = map;
+            Players = players;
         }
 
-        public void UpdateTick(Vector2i[] playerPositions)
+        public Round(string filename, params string[] playerNames)
         {
-            if (playerPositions.Length != players.Count)
-                throw new ArgumentException("wrong number of player positions!");
-            for (int i = 0; i < players.Count; i++)
-            {
-                players[i].Location = playerPositions[i];
-                var currentTile = map[playerPositions[i].X, playerPositions[i].Y];
-                if (currentTile.tileObject == null)
-                    continue;
-                else
-                    currentTile.tileObject.InteractWithPlayer(players[i]);
-                //InteractWithObject(players[i], currentTile.tileObject);
-            }
+            Map = new Map(filename);
+            Players = playerNames.Select(name => new Player(name, Map)).ToArray();
+        }
+
+        public void Update(Player player, Vector2i newLocation)
+        {
+            if (!Players.Contains(player))
+                throw new ArgumentException($"{nameof(player)} is not playing this round!");
+
+            if (player.Location == newLocation)
+                return;
+
+            player.Location = newLocation;
+            Map[newLocation.X, newLocation.Y].tileObject?.InteractWithPlayer(player);
         }
 
         private void InteractWithObject(Player currentPlayer, TileObject obj)
@@ -57,7 +58,7 @@ namespace HoMM
 
         public void DailyTick()
         {
-            foreach (var tile in map)
+            foreach (var tile in Map)
                 if (tile.tileObject is Mine)
                 {
                     var m = tile.tileObject as Mine;
@@ -67,13 +68,13 @@ namespace HoMM
 
 
 
-            daysPassed++;
-            if (daysPassed % 7 == 0)
+            DaysPassed++;
+            if (DaysPassed % 7 == 0)
                 WeeklyTick();
         }
         public void WeeklyTick()
         {
-            foreach (var tile in map)
+            foreach (var tile in Map)
                 if (tile.tileObject is Dwelling)
                 {
                     var d = tile.tileObject as Dwelling;

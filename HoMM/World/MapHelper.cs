@@ -19,9 +19,9 @@ namespace HoMM.World
                 .From(new DiagonalMazeGenerator(random))
                 .With(new BfsRoadGenerator(random, TileTerrain.Road)
                     .Over(new VoronoiTerrainGenerator(random, TileTerrain.Nature.ToArray())))
-                .With(new TopologicSpawner(random, mediumTier, p => new Mine(Resource.Crystals, p)))
+                .With(new GraphSpawner(random, mediumTier, p => new Mine(Resource.Crystals, p)))
                 .With(new DistanceSpawner(random, hardTier, p => new Mine(Resource.Ore, p)))
-                .With(new TopologicSpawner(random, easyTier, p => new Mine(Resource.Rubles, p)))
+                .With(new GraphSpawner(random, easyTier, p => new Mine(Resource.Rubles, p)))
                 .And(new DistanceSpawner(random, nightmare, p => new Mine(Resource.Gems, p)));
 
             return mapGenerator.GenerateMap(18);

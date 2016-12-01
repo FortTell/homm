@@ -38,9 +38,9 @@ namespace HoMM.MapViewer
                 .With(new BfsRoadGenerator(r, TileTerrain.Road)
                     .Over(new VoronoiTerrainGenerator(r, TileTerrain.Nature.ToArray())))
                 .With(new TopologicSpawner(r, mediumTier, p => new Mine(Resource.Crystals, p)))
-                .With(new MinDistanceSpawner(r, hardTier, p => new Mine(Resource.Ore, p)))
+                .With(new DistanceSpawner(r, hardTier, p => new Mine(Resource.Ore, p)))
                 .With(new TopologicSpawner(r, easyTier, p => new Mine(Resource.Rubles, p)))
-                .And(new MinDistanceSpawner(r, nightmare, p => new Mine(Resource.Gems, p)));
+                .And(new DistanceSpawner(r, nightmare, p => new Mine(Resource.Gems, p)));
 
             Map map = null;
             

@@ -20,9 +20,9 @@ namespace HoMM.World
                 .With(new BfsRoadGenerator(random, TileTerrain.Road)
                     .Over(new VoronoiTerrainGenerator(random, TileTerrain.Nature.ToArray())))
                 .With(new TopologicSpawner(random, mediumTier, p => new Mine(Resource.Crystals, p)))
-                .With(new MinDistanceSpawner(random, hardTier, p => new Mine(Resource.Ore, p)))
+                .With(new DistanceSpawner(random, hardTier, p => new Mine(Resource.Ore, p)))
                 .With(new TopologicSpawner(random, easyTier, p => new Mine(Resource.Rubles, p)))
-                .And(new MinDistanceSpawner(random, nightmare, p => new Mine(Resource.Gems, p)));
+                .And(new DistanceSpawner(random, nightmare, p => new Mine(Resource.Gems, p)));
 
             return mapGenerator.GenerateMap(18);
         }

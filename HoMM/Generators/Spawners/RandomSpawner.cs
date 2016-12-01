@@ -5,62 +5,6 @@ using System.Text;
 
 namespace HoMM.Generators
 {
-    public class SpawnerConfig
-    {
-        public SigmaIndex EmitterLocation { get; }
-        public double StartRadius { get; }
-        public double EndRadius { get; }
-        public double SpawnDensity { get; }
-        public double SpawnDistance => 1 / SpawnDensity;
-
-        public SpawnerConfig(SigmaIndex emitter, double startInclusive, double endExclusive, double density)
-        {
-            if (density > 1 || density <= 0)
-                throw new ArgumentException($"{nameof(density)} should be in range (0, 1]");
-
-            EmitterLocation = emitter;
-            StartRadius = startInclusive;
-            EndRadius = endExclusive;
-            SpawnDensity = density;
-        }
-    }
-
-    public class MinDistanceSpawner : RandomSpawner
-    {
-        public MinDistanceSpawner(
-            Random random,
-            SpawnerConfig config, 
-            Func<Vector2i, TileObject> factory)
-            
-            : base(random, config, factory,
-                  maze => SigmaIndex.Square(maze.Size)
-                    .Where(s => maze[s] == MazeCell.Empty)
-                    .Select(s => new { Value = s, Distance = config.EmitterLocation.ManhattanDistance(s) })
-                    .Where(s => s.Distance >= config.StartRadius)
-                    .Where(s => s.Distance < config.EndRadius)
-                    .Select(s => s.Value)
-                    .Where(s => s.IsAboveDiagonal(maze.Size)))
-        { }
-    }
-
-    public class TopologicSpawner : RandomSpawner
-    {
-        public TopologicSpawner(
-            Random random, 
-            SpawnerConfig config,
-            Func<Vector2i, TileObject> factory)
-
-            : base(random, config, factory,
-                  maze => Graph.BreadthFirstTraverse(SigmaIndex.Zero, s => s.Neighborhood
-                        .Clamp(maze.Size)
-                        .Where(n => maze[n] == MazeCell.Empty))
-                    .Select((x, i) => new { Distance = i, Node = x.Node })
-                    .SkipWhile(x => x.Distance < config.StartRadius)
-                    .TakeWhile(x => x.Distance < config.EndRadius)
-                    .Select(x => x.Node))
-        { }
-    }
-
     public class RandomSpawner : ISpawner
     {
         private readonly Random random;

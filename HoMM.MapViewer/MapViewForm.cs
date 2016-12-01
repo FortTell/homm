@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
 using System.Windows.Forms;
 using HoMM.Generators;
 
@@ -28,10 +27,10 @@ namespace HoMM.MapViewer
             
             var r = new Random();
 
-            var easyTier = new SpawnerConfig(Generators.SigmaIndex.Zero, 3, 30, 0.5);
-            var mediumTier = new SpawnerConfig(Generators.SigmaIndex.Zero, 30, 1000, 0.5);
-            var hardTier = new SpawnerConfig(Generators.SigmaIndex.Zero, 14, 16, 0.5);
-            var nightmare = new SpawnerConfig(Generators.SigmaIndex.Zero, 16.5, 20, 0.5);
+            var easyTier = new SpawnerConfig(SigmaIndex.Zero, 3, 30, 0.5);
+            var mediumTier = new SpawnerConfig(SigmaIndex.Zero, 30, 1000, 0.5);
+            var hardTier = new SpawnerConfig(SigmaIndex.Zero, 14, 16, 0.5);
+            var nightmare = new SpawnerConfig(SigmaIndex.Zero, 16.5, 20, 0.5);
 
             var gen = HommMapGenerator
                 .From(new DiagonalMazeGenerator(r))

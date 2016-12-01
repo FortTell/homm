@@ -60,6 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generators\Spawners\DistanceSpawner.cs" />
+    <Compile Include="Generators\Spawners\SpawnerConfig.cs" />
+    <Compile Include="Generators\Spawners\GraphSpawner.cs" />
     <Compile Include="Hero\HeroRobot.cs" />
     <Compile Include="Common\Vector2i.cs" />
     <Compile Include="HoMMEngine\HoMMEngine.cs" />
@@ -68,9 +71,9 @@
     <Compile Include="HoMMEngine\MapUnityConnecter.cs" />
     <Compile Include="Model\Combat.cs" />
     <Compile Include="Generators\Common\ISigmaMap.cs" />
-    <Compile Include="Generators\Common\MapSize.cs" />
+    <Compile Include="Common\MapSize.cs" />
     <Compile Include="Generators\Common\RandomGenerator.cs" />
-    <Compile Include="Generators\Common\SigmaIndex.cs" />
+    <Compile Include="Common\SigmaIndex.cs" />
     <Compile Include="Generators\Spawners\RandomSpawner.cs" />
     <Compile Include="Generators\Spawners\ISpawner.cs" />
     <Compile Include="Generators\IMapGenerator.cs" />

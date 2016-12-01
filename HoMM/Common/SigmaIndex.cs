@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HoMM.Generators
+namespace HoMM
 {
     public class SigmaIndex : Vector2i
     {

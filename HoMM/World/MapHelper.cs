@@ -10,10 +10,10 @@ namespace HoMM.World
     {
         public static Map CreateMap(Random random)
         {
-            var easyTier = new SpawnerConfig(SigmaIndex.Zero, 3, 30, 0.5);
-            var mediumTier = new SpawnerConfig(SigmaIndex.Zero, 30, 1000, 0.5);
-            var hardTier = new SpawnerConfig(SigmaIndex.Zero, 14, 16, 0.5);
-            var nightmare = new SpawnerConfig(SigmaIndex.Zero, 16.5, 20, 0.5);
+            var easyTier = new SpawnerConfig(Location.Zero, 3, 30, 0.5);
+            var mediumTier = new SpawnerConfig(Location.Zero, 30, 1000, 0.5);
+            var hardTier = new SpawnerConfig(Location.Zero, 14, 16, 0.5);
+            var nightmare = new SpawnerConfig(Location.Zero, 16.5, 20, 0.5);
 
             var mapGenerator = HommMapGenerator
                 .From(new DiagonalMazeGenerator(random))

@@ -29,14 +29,14 @@ namespace HoMM.Generators
             // need a local variable here to put it into a closure
             ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap.From(size, _ => MazeCell.Wall);
 
-            return Graph.DepthFirstTraverse(new SigmaIndex(0, 0),
+            return Graph.DepthFirstTraverse(new Location(0, 0),
 
                 s => s.Neighborhood
-                    .Clamp(size)
+                    .InsideAndAboveDiagonal(size)
                     .OrderBy(_ => random.Next()),
 
                 s => s.Neighborhood
-                    .Clamp(size)
+                    .InsideAndAboveDiagonal(size)
                     .Where(x => maze[x] == MazeCell.Empty)
                     .Count() > emptyNeighborhood
 
@@ -46,22 +46,22 @@ namespace HoMM.Generators
         private ImmutableSigmaMap<MazeCell> FixConnectivity(ImmutableSigmaMap<MazeCell> maze)
         {
             return IsConnected(maze) ? maze : maze
-                .Insert(new SigmaIndex(0, maze.Size.X), MazeCell.Empty)
-                .Insert(new SigmaIndex(maze.Size.Y, 0), MazeCell.Empty)
-                .Insert(new SigmaIndex(1, maze.Size.X), MazeCell.Empty)
-                .Insert(new SigmaIndex(maze.Size.Y, 1), MazeCell.Empty)
-                .Insert(new SigmaIndex(0, maze.Size.X - 1), MazeCell.Empty)
-                .Insert(new SigmaIndex(maze.Size.Y - 1, 0), MazeCell.Empty);   
+                .Insert(new Location(0, maze.Size.X), MazeCell.Empty)
+                .Insert(new Location(maze.Size.Y, 0), MazeCell.Empty)
+                .Insert(new Location(1, maze.Size.X), MazeCell.Empty)
+                .Insert(new Location(maze.Size.Y, 1), MazeCell.Empty)
+                .Insert(new Location(0, maze.Size.X - 1), MazeCell.Empty)
+                .Insert(new Location(maze.Size.Y - 1, 0), MazeCell.Empty);   
         }
 
         private bool IsConnected(ISigmaMap<MazeCell> maze)
         {
-            return Graph.DepthFirstTraverse(new SigmaIndex(0, 0), s => s.Neighborhood
+            return Graph.DepthFirstTraverse(new Location(0, 0), s => s.Neighborhood
                 .Where(n => n.IsInside(maze.Size))
                 .Where(n => maze[n] == MazeCell.Empty)
             )
             .Select(x => x.Node)
-            .Contains(new SigmaIndex(maze.Size.Y - 1, maze.Size.X - 1));
+            .Contains(new Location(maze.Size.Y - 1, maze.Size.X - 1));
         }
     }
 }

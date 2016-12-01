@@ -27,10 +27,10 @@ namespace HoMM.MapViewer
             
             var r = new Random();
 
-            var easyTier = new SpawnerConfig(SigmaIndex.Zero, 3, 30, 0.5);
-            var mediumTier = new SpawnerConfig(SigmaIndex.Zero, 30, 1000, 0.5);
-            var hardTier = new SpawnerConfig(SigmaIndex.Zero, 14, 16, 0.5);
-            var nightmare = new SpawnerConfig(SigmaIndex.Zero, 16.5, 20, 0.5);
+            var easyTier = new SpawnerConfig(HoMM.Location.Zero, 3, 30, 0.5);
+            var mediumTier = new SpawnerConfig(HoMM.Location.Zero, 30, 1000, 0.5);
+            var hardTier = new SpawnerConfig(HoMM.Location.Zero, 14, 16, 0.5);
+            var nightmare = new SpawnerConfig(HoMM.Location.Zero, 16.5, 20, 0.5);
 
             var gen = HommMapGenerator
                 .From(new DiagonalMazeGenerator(r))
@@ -90,7 +90,7 @@ namespace HoMM.MapViewer
             brush = new SolidBrush(GetColor(cell.tileObject, cell.tileTerrain, true, false, true));
             g.FillRectangle(brush, x * diameter, (y + voffset) * diameter, diameter, diameter);
 
-            var ind = new SigmaIndex(cell.location.Y, cell.location.X);
+            var ind = new Location(cell.location.Y, cell.location.X);
             var size = new MapSize(mapSize, mapSize);
 
             brush = new SolidBrush(ind.IsBelowDiagonal(size)

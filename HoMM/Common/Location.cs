@@ -3,28 +3,28 @@ using System.Collections.Generic;
 
 namespace HoMM
 {
-    public class SigmaIndex : Vector2i
+    public class Location : Vector2i
     {
-        public static readonly SigmaIndex Zero = new SigmaIndex(0, 0);
+        public static readonly Location Zero = new Location(0, 0);
 
-        public SigmaIndex(int y, int x) : base(x, y) { }
+        public Location(int y, int x) : base(x, y) { }
 
-        public IEnumerable<SigmaIndex> Neighborhood
+        public IEnumerable<Location> Neighborhood
         {
             get
             {
                 for (var dy = -1; dy < 2; dy++)
                     for (var dx = -1; dx < 2; dx++)
                         if (dx * dx + dy * dy != 0 && dy * dx * dx != 1)
-                            yield return new SigmaIndex(Y + dy + (X % 2) * dx * dx, X + dx);
+                            yield return new Location(Y + dy + (X % 2) * dx * dx, X + dx);
             }
         }
 
-        public SigmaIndex DiagonalMirror(MapSize size)
+        public Location DiagonalMirror(MapSize size)
         {
             return IsOnDiagonal(size) 
-                ? X < size.X / 2 ? this : new SigmaIndex(size.Y - Y - 1, size.X - X - 1)
-                : new SigmaIndex(size.Y - Y - 1, size.X - X - 1);
+                ? X < size.X / 2 ? this : new Location(size.Y - Y - 1, size.X - X - 1)
+                : new Location(size.Y - Y - 1, size.X - X - 1);
         }
 
         public bool IsInside(MapSize size)
@@ -47,26 +47,26 @@ namespace HoMM
             return !IsAboveDiagonal(size) && !IsBelowDiagonal(size);
         }
 
-        public SigmaIndex AboveDiagonal(MapSize size)
+        public Location AboveDiagonal(MapSize size)
         {
             return IsAboveDiagonal(size) ? this : DiagonalMirror(size);
         }
 
-        public static IEnumerable<SigmaIndex> Square(MapSize size)
+        public static IEnumerable<Location> Square(MapSize size)
         {
             for (int y = 0; y < size.Y; ++y)
                 for (int x = 0; x < size.X; ++x)
-                    yield return new SigmaIndex(y, x);
+                    yield return new Location(y, x);
         }
 
-        public double EuclideanDistance(SigmaIndex other)
+        public double EuclideanDistance(Location other)
         {
             var thisFixY = Y + 0.5 * (X % 2);
             var otherFixY = other.Y + 0.5 * (other.X % 2);
             return Math.Sqrt(Math.Pow(X-other.X, 2) + Math.Pow(thisFixY-otherFixY, 2));
         }
 
-        public double ManhattanDistance(SigmaIndex other)
+        public double ManhattanDistance(Location other)
         {
             var thisFixY = Y + 0.5 * (X % 2);
             var otherFixY = other.Y + 0.5 * (other.X % 2);

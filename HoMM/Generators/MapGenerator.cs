@@ -43,7 +43,7 @@ namespace HoMM.Generators
                 .Aggregate(SigmaMap.Empty<TileObject>(maze.Size), 
                 (m, g) => m.Merge(g.Spawn(maze)));
 
-            var tiles = SigmaIndex.Square(mapSize)
+            var tiles = Location.Square(mapSize)
                 .Select(s => new Tile(s.X, s.Y, terrainMap[s],
                     maze[s] == MazeCell.Empty ? entities[s] : new Impassable(s)));
 

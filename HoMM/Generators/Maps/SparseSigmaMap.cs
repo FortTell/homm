@@ -10,10 +10,10 @@ namespace HoMM.Generators
     {
         public override MapSize Size { get; }
 
-        private IDictionary<SigmaIndex, TCell> cells;
+        private IDictionary<Location, TCell> cells;
         private TCell defaultValue;
 
-        public SparseSigmaMap(MapSize size, IDictionary<SigmaIndex, TCell> cells, 
+        public SparseSigmaMap(MapSize size, IDictionary<Location, TCell> cells, 
             TCell defaultValue = default(TCell))
         {
             Size = size;
@@ -21,20 +21,20 @@ namespace HoMM.Generators
             this.defaultValue = defaultValue;
         }
 
-        public SparseSigmaMap(MapSize size, Func<SigmaIndex, TCell> cellsFactory,
+        public SparseSigmaMap(MapSize size, Func<Location, TCell> cellsFactory,
             TCell defaultValue = default(TCell))
-            : this(size, new Dictionary<SigmaIndex, TCell>(), defaultValue)
+            : this(size, new Dictionary<Location, TCell>(), defaultValue)
         {
-            foreach (var index in SigmaIndex.Square(size))
+            foreach (var location in Location.Square(size))
             {
-                var cell = cellsFactory(index);
+                var cell = cellsFactory(location);
                 
                 if (cell == null || !cell.Equals(defaultValue))
-                    cells.Add(index, cell);
+                    cells.Add(location, cell);
             }
         }
 
-        public override TCell this[SigmaIndex location]
+        public override TCell this[Location location]
         {
             get { return cells.ContainsKey(location) ? cells[location] : defaultValue; }
         }
@@ -49,7 +49,7 @@ namespace HoMM.Generators
         }
 
         public static SparseSigmaMap<TCell> From<TCell>(MapSize size, 
-            Func<SigmaIndex, TCell> cellsFactory, TCell defaultValue = default(TCell))
+            Func<Location, TCell> cellsFactory, TCell defaultValue = default(TCell))
         {
             return new SparseSigmaMap<TCell>(size, cellsFactory);
         }

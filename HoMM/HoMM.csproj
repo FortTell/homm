@@ -73,7 +73,7 @@
     <Compile Include="Generators\Common\ISigmaMap.cs" />
     <Compile Include="Common\MapSize.cs" />
     <Compile Include="Generators\Common\RandomGenerator.cs" />
-    <Compile Include="Common\SigmaIndex.cs" />
+    <Compile Include="Common\Location.cs" />
     <Compile Include="Generators\Spawners\RandomSpawner.cs" />
     <Compile Include="Generators\Spawners\ISpawner.cs" />
     <Compile Include="Generators\IMapGenerator.cs" />

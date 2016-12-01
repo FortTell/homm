@@ -7,13 +7,13 @@ namespace HoMM.Generators
 {
     public class SpawnerConfig
     {
-        public SigmaIndex EmitterLocation { get; }
+        public Location EmitterLocation { get; }
         public double StartRadius { get; }
         public double EndRadius { get; }
         public double SpawnDensity { get; }
         public double SpawnDistance => 1 / SpawnDensity;
 
-        public SpawnerConfig(SigmaIndex emitter, double startInclusive, double endExclusive, double density)
+        public SpawnerConfig(Location emitter, double startInclusive, double endExclusive, double density)
         {
             if (density > 1 || density <= 0)
                 throw new ArgumentException($"{nameof(density)} should be in range (0, 1]");

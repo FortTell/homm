@@ -13,8 +13,8 @@ namespace HoMM.Generators
             Func<Vector2i, TileObject> factory)
 
             : base(random, config, factory,
-                  maze => Graph.BreadthFirstTraverse(SigmaIndex.Zero, s => s.Neighborhood
-                        .Clamp(maze.Size)
+                  maze => Graph.BreadthFirstTraverse(Location.Zero, s => s.Neighborhood
+                        .InsideAndAboveDiagonal(maze.Size)
                         .Where(n => maze[n] == MazeCell.Empty))
                     .Select((x, i) => new { Distance = i, Node = x.Node })
                     .SkipWhile(x => x.Distance < config.StartRadius)

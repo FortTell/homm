@@ -11,12 +11,12 @@ namespace HoMM.Generators
         private readonly Func<Vector2i, TileObject> factory;
         private readonly SpawnerConfig config;
 
-        private readonly Func<ISigmaMap<MazeCell>, IEnumerable<SigmaIndex>> getSpawnLocations;
+        private readonly Func<ISigmaMap<MazeCell>, IEnumerable<Location>> getSpawnLocations;
 
         public RandomSpawner(Random random,
             SpawnerConfig config,
             Func<Vector2i, TileObject> factory,
-            Func<ISigmaMap<MazeCell>, IEnumerable<SigmaIndex>> spawnLocations)
+            Func<ISigmaMap<MazeCell>, IEnumerable<Location>> spawnLocations)
         {
             this.random = random;
             this.factory = factory;
@@ -28,7 +28,7 @@ namespace HoMM.Generators
         {
             var potentialLocations = getSpawnLocations(maze).ToArray();
             
-            var spawnPoints = new HashSet<SigmaIndex>();
+            var spawnPoints = new HashSet<Location>();
 
             while (potentialLocations.Length != 0)
             {
@@ -46,22 +46,22 @@ namespace HoMM.Generators
                 s => IsSpawnPoint(spawnPoints, s, maze.Size) ? factory(s) : null);
         }
 
-        private bool IsSpawnPoint(HashSet<SigmaIndex> spawns, SigmaIndex index, MapSize size)
+        private bool IsSpawnPoint(HashSet<Location> spawns, Location location, MapSize size)
         {
-            if (!IsBorderIndex(index, size))
-                return spawns.Contains(index.AboveDiagonal(size));
+            if (!IsNearBorder(location, size))
+                return spawns.Contains(location.AboveDiagonal(size));
 
-            if (index.X >= size.X / 2.0)
-                return spawns.Contains(index);
+            if (location.X >= size.X / 2.0)
+                return spawns.Contains(location);
 
-            return index.AboveDiagonal(size) == index 
+            return location.AboveDiagonal(size) == location 
                 ? false
-                : spawns.Contains(index.AboveDiagonal(size));
+                : spawns.Contains(location.AboveDiagonal(size));
         }
 
-        private bool IsBorderIndex(SigmaIndex index, MapSize size)
+        private bool IsNearBorder(Location location, MapSize size)
         {
-            return index.AboveDiagonal(size).ManhattanDistance(SigmaIndex.Zero) > size.X - 2;
+            return location.AboveDiagonal(size).ManhattanDistance(Location.Zero) > size.X - 2;
         }
     }
 }

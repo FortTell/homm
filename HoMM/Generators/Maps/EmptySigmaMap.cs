@@ -7,7 +7,7 @@ namespace HoMM.Generators
 {
     class EmptySigmaMap<TCell> : ImmutableSigmaMap<TCell>
     {
-        public override TCell this[SigmaIndex location]
+        public override TCell this[Location location]
         {
             get { return default(TCell); }
         }

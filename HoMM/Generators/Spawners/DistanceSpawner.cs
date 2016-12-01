@@ -13,7 +13,7 @@ namespace HoMM.Generators
             Func<Vector2i, TileObject> factory)
 
             : base(random, config, factory,
-                  maze => SigmaIndex.Square(maze.Size)
+                  maze => Location.Square(maze.Size)
                     .Where(s => maze[s] == MazeCell.Empty)
                     .Select(s => new { Value = s, Distance = config.EmitterLocation.ManhattanDistance(s) })
                     .Where(s => s.Distance >= config.StartRadius)

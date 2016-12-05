@@ -41,5 +41,16 @@ namespace HexModelTesting
             Assert.That(p1.HasNoArmy);
             Assert.That(p2.Army[UnitType.Ranged] == 1);
         }
+
+        [Test]
+        public void TestCavCounter()
+        {
+            p1.AddUnits(UnitType.Cavalry, 1);
+            p2.AddUnits(UnitType.Infantry, 4);
+
+            Combat.ResolveBattle(p1, p2);
+            Assert.That(p1.HasNoArmy);
+            Assert.That(p2.Army[UnitType.Infantry] == 1);
+        }
     }
 }

@@ -1,14 +1,14 @@
-﻿using System.Drawing;
-
-namespace HoMM
+﻿namespace HoMM
 {
     public class NeutralArmy : TileObject
     {
         public readonly Unit Unit;
         public CapturableObject GuardedObject { get; private set; }
         public int Quantity { get; private set; }
+        
+        public override bool IsPassable => true;
 
-        public NeutralArmy(Unit unit, int quantity, Point location) : base(location)
+        public NeutralArmy(Unit unit, int quantity, Vector2i location) : base(location)
         {
             Unit = unit;
             Quantity = quantity;

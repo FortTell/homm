@@ -2,9 +2,9 @@
 
 namespace HoMM.Generators
 {
-    public interface ISigmaMap<TCell> : IEnumerable<SigmaIndex>
+    public interface ISigmaMap<TCell> : IEnumerable<Location>
     {
         MapSize Size { get; }
-        TCell this[SigmaIndex location] { get; }
+        TCell this[Location location] { get; }
     }
 }

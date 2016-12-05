@@ -1,10 +1,10 @@
-﻿using System.Drawing;
-
-namespace HoMM
+﻿namespace HoMM
 {
     public class Mine : CapturableObject
     {
         public Resource Resource { get; private set; }
+        
+        public override bool IsPassable => false;
 
         public int Yield
         {
@@ -20,7 +20,7 @@ namespace HoMM
             }
         }
 
-        public Mine(Resource res, Point location) : base(location)
+        public Mine(Resource res, Vector2i location) : base(location)
         {
             Resource = res;
         }

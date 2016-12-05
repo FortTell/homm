@@ -1,19 +1,19 @@
 ﻿namespace HoMM.Generators
 {
-    class ModifiedMapWrapper<TCell> : ImmutableSigmaMap<TCell>
+    sealed class ModifiedMapWrapper<TCell> : ImmutableSigmaMap<TCell>
     {
         public ISigmaMap<TCell> ParentMaze { get; private set; }
-        public SigmaIndex ModifiedLocation { get; private set; }
+        public Location ModifiedLocation { get; private set; }
         public TCell ModifiedCell { get; private set; }
 
         public override MapSize Size { get { return ParentMaze.Size; } }
 
-        public override TCell this[SigmaIndex index]
+        public override TCell this[Location location]
         {
-            get { return ModifiedLocation.Equals(index) ? ModifiedCell : ParentMaze[index]; }
+            get { return ModifiedLocation.Equals(location) ? ModifiedCell : ParentMaze[location]; }
         }
 
-        public ModifiedMapWrapper(ISigmaMap<TCell> parent, SigmaIndex modLocation, TCell modCell)
+        public ModifiedMapWrapper(ISigmaMap<TCell> parent, Location modLocation, TCell modCell)
         {
             ParentMaze = parent;
             ModifiedLocation = modLocation;

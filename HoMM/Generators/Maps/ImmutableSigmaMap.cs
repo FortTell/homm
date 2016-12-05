@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace HoMM.Generators
 {
-    public abstract class ImmutableSigmaMap<TCell> : ISigmaMap<TCell>
+    abstract class ImmutableSigmaMap<TCell> : ISigmaMap<TCell>
     {
-        public abstract TCell this[SigmaIndex location] { get; }
+        public abstract TCell this[Location location] { get; }
         public abstract MapSize Size { get; }
         
-        public IEnumerator<SigmaIndex> GetEnumerator()
+        public IEnumerator<Location> GetEnumerator()
         {
-            return SigmaIndex
+            return Location
                 .Square(Size)
                 .Where(s => this[s] != null).GetEnumerator();
         }
 
-        public ImmutableSigmaMap<TCell> Insert(SigmaIndex location, TCell cell)
+        public ImmutableSigmaMap<TCell> Insert(Location location, TCell cell)
         {
             if (location.X < 0 || location.X > Size.X ||
                 location.Y < 0 || location.Y > Size.Y)
@@ -25,7 +25,7 @@ namespace HoMM.Generators
 
             return new ModifiedMapWrapper<TCell>(this, location, cell);
         }
-
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

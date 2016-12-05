@@ -5,11 +5,16 @@ namespace HoMM.Generators
 {
     public class DiagonalMazeGenerator : RandomGenerator, IMazeGenerator
     {
-        public DiagonalMazeGenerator(Random random) : base(random) { }
+        private int emptyNeighborhood;
+
+        public DiagonalMazeGenerator(Random random, int emptyNeighborhood=3) : base(random)
+        {
+            this.emptyNeighborhood = emptyNeighborhood;
+        }
 
         public ISigmaMap<MazeCell> Construct(MapSize size)
         {
-            return ArraySigmaMap<MazeCell>
+            return ArraySigmaMap
                 .From(FixConnectivity(SymmetricallyComplete(InitAboveDiagonal(size))));
         }
 
@@ -22,39 +27,41 @@ namespace HoMM.Generators
         private ImmutableSigmaMap<MazeCell> InitAboveDiagonal(MapSize size)
         {
             // need a local variable here to put it into a closure
-            ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap<MazeCell>.Solid(size, _ => MazeCell.Wall);
+            ImmutableSigmaMap<MazeCell> maze = ArraySigmaMap.From(size, _ => MazeCell.Wall);
 
-            return Graph.DepthFirstTraverse(new SigmaIndex(0, 0),
+            return Graph.DepthFirstTraverse(new Location(0, 0),
 
                 s => s.Neighborhood
-                    .Clamp(size)
+                    .InsideAndAboveDiagonal(size)
                     .OrderBy(_ => random.Next()),
 
                 s => s.Neighborhood
-                    .Clamp(size)
+                    .InsideAndAboveDiagonal(size)
                     .Where(x => maze[x] == MazeCell.Empty)
-                    .Count() > 2
+                    .Count() > emptyNeighborhood
 
-            ).Aggregate(maze, (m, r) => maze = m.Insert(r, MazeCell.Empty));
+            ).Aggregate(maze, (m, r) => maze = m.Insert(r.Node, MazeCell.Empty));
         }
 
         private ImmutableSigmaMap<MazeCell> FixConnectivity(ImmutableSigmaMap<MazeCell> maze)
         {
             return IsConnected(maze) ? maze : maze
-                .Insert(new SigmaIndex(0, maze.Size.X), MazeCell.Empty)
-                .Insert(new SigmaIndex(maze.Size.Y, 0), MazeCell.Empty)
-                .Insert(new SigmaIndex(1, maze.Size.X), MazeCell.Empty)
-                .Insert(new SigmaIndex(maze.Size.Y, 1), MazeCell.Empty)
-                .Insert(new SigmaIndex(0, maze.Size.X - 1), MazeCell.Empty)
-                .Insert(new SigmaIndex(maze.Size.Y - 1, 0), MazeCell.Empty);   
+                .Insert(new Location(0, maze.Size.X), MazeCell.Empty)
+                .Insert(new Location(maze.Size.Y, 0), MazeCell.Empty)
+                .Insert(new Location(1, maze.Size.X), MazeCell.Empty)
+                .Insert(new Location(maze.Size.Y, 1), MazeCell.Empty)
+                .Insert(new Location(0, maze.Size.X - 1), MazeCell.Empty)
+                .Insert(new Location(maze.Size.Y - 1, 0), MazeCell.Empty);   
         }
 
         private bool IsConnected(ISigmaMap<MazeCell> maze)
         {
-            return Graph.DepthFirstTraverse(new SigmaIndex(0, 0), s => s.Neighborhood
+            return Graph.DepthFirstTraverse(new Location(0, 0), s => s.Neighborhood
                 .Where(n => n.IsInside(maze.Size))
                 .Where(n => maze[n] == MazeCell.Empty)
-            ).Contains(new SigmaIndex(maze.Size.Y - 1, maze.Size.X - 1));
+            )
+            .Select(x => x.Node)
+            .Contains(new Location(maze.Size.Y - 1, maze.Size.X - 1));
         }
     }
 }

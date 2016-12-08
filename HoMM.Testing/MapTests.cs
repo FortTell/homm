@@ -17,15 +17,15 @@ namespace HexModelTesting
             var m = new Map("TestMaps\\map1.txt");
             Assert.AreEqual(m.Height, 1);
             Assert.AreEqual(m.Width, 1);
-            Assert.IsEmpty(m.GetNeighbourTiles(0, 0));
+            Assert.IsEmpty(Location.Zero.Neighborhood.Inside(m.Size));
         }
 
         [Test]
         public void InitOfBadTerrainThrows()
         {
             Assert.Throws<ArgumentException>(
-                () => new Map("TestMaps\\badTerrain.txt"), 
-                "Unknown terrain type!", 
+                () => new Map("TestMaps\\badTerrain.txt"),
+                "Unknown terrain type!",
                 new object[] { });
         }
 
@@ -44,10 +44,10 @@ namespace HexModelTesting
             var m = new Map("TestMaps\\goodMap.txt");
             Assert.AreEqual(m.Height, 6);
             Assert.AreEqual(m.Width, 5);
-            var tiles = m.GetNeighbourTiles(4, 5);
-            Assert.AreEqual(tiles.Count, 3);
-            var expected = new List<Vector2i> { new Vector2i(3, 4), new Vector2i(3, 5), new Vector2i(4, 4) };
-            CollectionAssert.AreEquivalent(tiles.Select(t => t.location), expected);
+            var neighbours = new Location(5, 4).Neighborhood.Inside(m.Size).ToList();
+            Assert.AreEqual(neighbours.Count, 3);
+            var expected = new List<Location> { new Location(4, 3), new Location(5, 3), new Location(4, 4) };
+            CollectionAssert.AreEquivalent(neighbours, expected);
         }
 
         [Test]

@@ -17,7 +17,7 @@ namespace HoMM
             }
         }
 
-        protected CapturableObject(Vector2i location) : base(location)
+        protected CapturableObject(Location location) : base(location)
         {
             Owner = null;
         }

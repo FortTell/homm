@@ -10,7 +10,7 @@ namespace HoMM.Generators
         public GraphSpawner(
             Random random,
             SpawnerConfig config,
-            Func<Vector2i, TileObject> factory)
+            Func<Location, TileObject> factory)
 
             : base(random, config, factory,
                   maze => Graph.BreadthFirstTraverse(Location.Zero, s => s.Neighborhood

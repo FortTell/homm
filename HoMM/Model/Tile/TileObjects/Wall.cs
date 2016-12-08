@@ -8,6 +8,6 @@ namespace HoMM
     public class Wall : TileObject
     {
         public override bool IsPassable => false;
-        public Wall(Vector2i location) : base(location) { }
+        public Wall(Location location) : base(location) { }
     }
 }

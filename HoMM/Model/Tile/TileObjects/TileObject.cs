@@ -6,7 +6,7 @@ namespace HoMM
     public abstract class TileObject: INotifyPropertyChanged
     {
         public string unityID;
-        public readonly Vector2i location;
+        public readonly Location location;
         
         public abstract bool IsPassable { get; }
 
@@ -18,7 +18,7 @@ namespace HoMM
         }
 
         
-        protected TileObject(Vector2i location)
+        protected TileObject(Location location)
         {
             this.location = location;
         }

@@ -8,14 +8,14 @@ namespace HoMM.Generators
     public class RandomSpawner : ISpawner
     {
         private readonly Random random;
-        private readonly Func<Vector2i, TileObject> factory;
+        private readonly Func<Location, TileObject> factory;
         private readonly SpawnerConfig config;
 
         private readonly Func<ISigmaMap<MazeCell>, IEnumerable<Location>> getSpawnLocations;
 
         public RandomSpawner(Random random,
             SpawnerConfig config,
-            Func<Vector2i, TileObject> factory,
+            Func<Location, TileObject> factory,
             Func<ISigmaMap<MazeCell>, IEnumerable<Location>> spawnLocations)
         {
             this.random = random;

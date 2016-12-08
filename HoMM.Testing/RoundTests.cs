@@ -17,14 +17,14 @@ namespace HexModelTesting
         public void PrepareGoodMap()
         {
             round = new Round("TestMaps\\goodMap.txt", new string[] { "First", "Second" });
-            round.UpdateTick(new Vector2i[] { new Vector2i(0, 0), new Vector2i(2, 1) });
+            round.UpdateTick(new Location[] { new Location(0, 0), new Location(1, 2) });
         }
 
         [Test]
         public void TestMineCapturing()
         {
-            round.UpdateTick(new Vector2i[] { new Vector2i(1, 0), new Vector2i(2, 1) });
-            var mine = (Mine)round.Map[1, 0].tileObject;
+            round.UpdateTick(new Location[] { new Location(1, 0), new Location(1, 2) });
+            var mine = (Mine)round.Map[new Location(1, 0)].tileObject;
             Assert.That(mine.Owner == round.Players[0]);
             Assert.That(mine.Resource == Resource.Rubles);
             round.DailyTick();
@@ -34,7 +34,7 @@ namespace HexModelTesting
         [Test]
         public void TestResGathering()
         {
-            round.UpdateTick(new Vector2i[] { new Vector2i(0, 0), new Vector2i(1, 1) });
+            round.UpdateTick(new Location[] { new Location(0, 0), new Location(1, 1) });
             Assert.That(round.Players[1].CheckResourceAmount(Resource.Rubles) == 100);
             //Assert.That(round.map[1, 1].tileObject == null);
         }
@@ -42,9 +42,10 @@ namespace HexModelTesting
         [Test]
         public void TestObjectRecapture()
         {
-            var obj = (CapturableObject)round.Map[2, 1].tileObject;
+            round.UpdateTick(new Location[] { new Location(0, 0), new Location(2, 1) });
+            var obj = (CapturableObject)round.Map[new Location(2, 1)].tileObject;
             Assert.That(obj.Owner == round.Players[1]);
-            round.UpdateTick(new Vector2i[] { new Vector2i(2, 1), new Vector2i(0, 0) });
+            round.UpdateTick(new Location[] { new Location(2, 1), new Location(0, 0) });
             Assert.That(obj.Owner == round.Players[0]);
         }
 
@@ -77,9 +78,23 @@ namespace HexModelTesting
         {
             for (int i = 0; i < 7; i++)
                 round.DailyTick();
-            var dwelling = (Dwelling)round.Map[2, 1].tileObject;
+            var dwelling = (Dwelling)round.Map[new Location(2, 1)].tileObject;
             Assert.That(dwelling.AvailableUnits == 16);
             Assert.False(round.Players[0].TryBuyUnits(1));
+        }
+
+        [Test]
+        public void PurchaseSuccessTest()
+        {
+            for (int i = 0; i < 7; i++)
+                round.DailyTick();
+            var dwelling = (Dwelling)round.Map[new Location(2, 1)].tileObject;
+            round.UpdateTick(new Location[] { new Location(2, 1), new Location(0, 0) });
+            var player = round.Players[0];
+            player.GainResources(Resource.Rubles, 1000);
+            player.GainResources(Resource.Wood, 5);
+            player.TryBuyUnits(5);
+            Assert.That(player.Army[UnitType.Ranged] == 5);
         }
         #endregion
     }

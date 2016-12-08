@@ -10,7 +10,7 @@ namespace HoMM
         public int Defence { get; private set; }
         private Map map;
         Dictionary<Resource, int> resources;
-        public Vector2i Location { get; set; }
+        public Location Location { get; set; }
         public Dictionary<UnitType, int> Army { get; }
         public bool HasNoArmy
         {
@@ -81,10 +81,10 @@ namespace HoMM
         {
             if (unitsToBuy <= 0)
                 throw new ArgumentException("Buy positive amounts of units!");
-            if (!(map[Location.X, Location.Y].tileObject is Dwelling))
+            if (!(map[Location].tileObject is Dwelling))
                 return false;
 
-            var d = (Dwelling)map[Location.X, Location.Y].tileObject;
+            var d = (Dwelling)map[Location].tileObject;
             if (d.AvailableUnits < unitsToBuy)
                 return false;
             foreach (var kvp in d.Recruit.UnitCost)

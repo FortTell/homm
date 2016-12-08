@@ -9,7 +9,7 @@ namespace HoMM
         public Unit Recruit { get; private set; }
         public int AvailableUnits { get; private set; }
 
-        public Dwelling(Unit unit, Vector2i location, int availableUnits = 0) : base(location)
+        public Dwelling(Unit unit, Location location, int availableUnits = 0) : base(location)
         {
             if (availableUnits < 0)
                 throw new ArgumentException("Cannot have negative units at dwelling!");

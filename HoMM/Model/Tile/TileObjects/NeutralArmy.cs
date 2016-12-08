@@ -8,7 +8,7 @@
         
         public override bool IsPassable => true;
 
-        public NeutralArmy(Unit unit, int quantity, Vector2i location) : base(location)
+        public NeutralArmy(Unit unit, int quantity, Location location) : base(location)
         {
             Unit = unit;
             Quantity = quantity;

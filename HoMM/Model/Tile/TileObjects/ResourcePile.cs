@@ -9,7 +9,7 @@ namespace HoMM
 
         public override bool IsPassable => true;
 
-        public ResourcePile(Resource resource, int quantity, Vector2i location) : base(location)
+        public ResourcePile(Resource resource, int quantity, Location location) : base(location)
         {
             if (quantity <= 0)
                 throw new ArgumentException("Cannot create zero or less resources!");

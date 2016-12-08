@@ -8,14 +8,14 @@ namespace HoMM.Units.HexagonalMovementUnit
     [Serializable]
     abstract class HexMovement
     {
-        public abstract Vector2i Turn(Vector2i location);
+        public abstract Location Turn(Location location);
     }
 
 
     [Serializable]
     class Wait : HexMovement
     {
-        public override Vector2i Turn(Vector2i location) => location;
+        public override Location Turn(Location location) => location;
     }
 
     [Serializable]
@@ -28,24 +28,24 @@ namespace HoMM.Units.HexagonalMovementUnit
             Direction = direction;
         }
 
-        public override Vector2i Turn(Vector2i location)
+        public override Location Turn(Location location)
         {
             var isEven = location.Y % 2 == 0;
 
             switch (Direction)
             {
                 case Direction.Up:
-                    return new Vector2i(location.X, location.Y - 1);
+                    return new Location(location.Y - 1, location.X);
                 case Direction.Down:
-                    return new Vector2i(location.X, location.Y + 1);
+                    return new Location(location.Y + 1, location.X);
                 case Direction.LeftUp:
-                    return new Vector2i(location.X - 1, isEven ? location.Y - 1 : location.Y);
+                    return new Location(isEven ? location.Y - 1 : location.Y, location.X - 1);
                 case Direction.LeftDown:
-                    return new Vector2i(location.X - 1, isEven ? location.Y : location.Y + 1);
+                    return new Location(isEven ? location.Y : location.Y + 1, location.X - 1);
                 case Direction.RightUp:
-                    return new Vector2i(location.X + 1, isEven ? location.Y - 1 : location.Y);
+                    return new Location(isEven ? location.Y - 1 : location.Y, location.X + 1);
                 case Direction.RightDown:
-                    return new Vector2i(location.X + 1, isEven ? location.Y : location.Y + 1);
+                    return new Location(isEven ? location.Y : location.Y + 1, location.X + 1);
             }
 
             throw new ArgumentException($"{nameof(Direction)} contains invalid value!");

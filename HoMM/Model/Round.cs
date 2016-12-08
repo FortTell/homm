@@ -22,7 +22,7 @@ namespace HoMM
             Players = playerNames.Select(name => new Player(name, Map)).ToArray();
         }
 
-        public void UpdateTick(params Vector2i[] playerPositions)
+        public void UpdateTick(params Location[] playerPositions)
         {
             if (playerPositions.Length != Players.Length)
                 throw new ArgumentException("wrong number of player positions!");
@@ -31,7 +31,7 @@ namespace HoMM
                 Update(Players[i], playerPositions[i]);
         }
 
-        public void Update(Player player, Vector2i newLocation)
+        public void Update(Player player, Location newLocation)
         {
             if (!Players.Contains(player))
                 throw new ArgumentException($"{nameof(player)} is not playing this round!");
@@ -40,9 +40,10 @@ namespace HoMM
                 return;
 
             player.Location = newLocation;
-            Map[newLocation.X, newLocation.Y].tileObject?.InteractWithPlayer(player);
+            Map[newLocation].tileObject?.InteractWithPlayer(player);
         }
 
+        //obsolete
         private void InteractWithObject(Player currentPlayer, TileObject obj)
         {
             switch (obj.GetType().Name)
@@ -81,7 +82,7 @@ namespace HoMM
             if (DaysPassed % 7 == 0)
                 WeeklyTick();
         }
-        public void WeeklyTick()
+        private void WeeklyTick()
         {
             foreach (var tile in Map)
                 if (tile.tileObject is Dwelling)

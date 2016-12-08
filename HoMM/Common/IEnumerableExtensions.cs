@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HoMM
 {
-    static class IEnumerableExtensions
+    public static class IEnumerableExtensions
     {
         /// <summary>
         /// Yields only indices that are lying inside of a triangle with 
@@ -17,7 +17,14 @@ namespace HoMM
             return source
                 .Where(location => location.IsInside(size) && location.IsAboveDiagonal(size));
         }
-        
+
+        public static IEnumerable<Location> Inside
+            (this IEnumerable<Location> source, MapSize size)
+        {
+            return source
+                .Where(location => location.IsInside(size));
+        }
+
         public static T Argmin<T>(this ICollection<T> source, Func<T, double> selector)
         {
             var min = source.Min(selector);

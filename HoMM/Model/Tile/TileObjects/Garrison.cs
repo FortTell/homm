@@ -7,7 +7,7 @@ namespace HoMM
         public override bool IsPassable => true;
 
         public Dictionary<Unit, int> guards;
-        public Garrison(Dictionary<Unit, int> guards, Vector2i location) : base(location)
+        public Garrison(Dictionary<Unit, int> guards, Location location) : base(location)
         {
             this.guards = guards;
         }

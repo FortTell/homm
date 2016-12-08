@@ -8,7 +8,7 @@ namespace HoMM.Units.HexagonalMovementUnit
 {
     interface IHexMovRobot : IActor
     {
-        Vector2i Location { get; set; }
+        Location Location { get; set; }
         double VelocityModifier { get; }
     }
 }

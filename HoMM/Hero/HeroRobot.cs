@@ -18,7 +18,7 @@ namespace HoMM.Hero
         public Player Player { get; }
         public double VelocityModifier { get; }
 
-        public Vector2i Location
+        public Location Location
         {
             get { return Player.Location; }
             set { World.Round.Update(Player, value); }

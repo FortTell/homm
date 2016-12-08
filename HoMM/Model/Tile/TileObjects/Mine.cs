@@ -20,7 +20,7 @@
             }
         }
 
-        public Mine(Resource res, Vector2i location) : base(location)
+        public Mine(Resource res, Location location) : base(location)
         {
             Resource = res;
         }

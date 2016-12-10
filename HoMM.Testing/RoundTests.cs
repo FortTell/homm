@@ -121,7 +121,72 @@ namespace HexModelTesting
         #endregion
 
         #region player.ExchangeUnitsWithGarrison testing
+        [Test]
+        public void ExhchangeFailsWhenNotAtGarrison()
+        {
+            var p = round.Players[0];
+            p.AddUnits(UnitType.Infantry, 20);
+            p.AddUnits(UnitType.Ranged, 5);
+            Assert.False(p.TryExchangeUnitsWithGarrison(p.Army));
+        }
 
+        [Test]
+        public void ExchangeFailsWhenNotOwnerOfGarrison()
+        {
+            round.UpdateTick(new Location[] { new Location(3, 3), new Location(0, 0) });
+            var p = round.Players[0];
+            p.AddUnits(UnitType.Infantry, 20);
+            p.AddUnits(UnitType.Ranged, 5);
+            var garrison = (Garrison)round.Map[new Location(3, 3)].tileObject;
+            Assert.That(garrison.Owner != p);
+            Assert.False(p.TryExchangeUnitsWithGarrison(p.Army));
+        }
+
+        [Test]
+        public void ExchangeFailsWhenGivingMoreThatYouHave()
+        {
+            var p = round.Players[0];
+            p.AddUnits(UnitType.Infantry, 20);
+            p.AddUnits(UnitType.Ranged, 5);
+            var garrison = (Garrison)round.Map[new Location(3, 3)].tileObject;
+            round.UpdateTick(new Location[] { new Location(3, 3), new Location(0, 0) });
+            Assert.That(garrison.Owner == p);
+            var unitsToGive = new Dictionary<UnitType, int> { [UnitType.Infantry] = p.Army[UnitType.Infantry] + 1 };
+            Assert.False(p.TryExchangeUnitsWithGarrison(unitsToGive));
+        }
+
+        [Test]
+        public void TestExchangeGivingSuccess()
+        {
+            var p = round.Players[0];
+            p.AddUnits(UnitType.Infantry, 20);
+            p.AddUnits(UnitType.Ranged, 5);
+            var garrison = (Garrison)round.Map[new Location(3, 3)].tileObject;
+            round.UpdateTick(new Location[] { new Location(3, 3), new Location(0, 0) });
+            Assert.That(garrison.Owner == p && p.Army[UnitType.Infantry] == 10);
+            var unitsToGive = new Dictionary<UnitType, int> { [UnitType.Infantry] = 1 };
+            Assert.True(p.TryExchangeUnitsWithGarrison(unitsToGive));
+            Assert.True(p.Army[UnitType.Infantry] == 10 - 1);
+            Assert.True(garrison.Army[UnitType.Infantry] == 1);
+        }
+
+        [Test]
+        public void ExchangeFailsWhenTakingMoreThanThereIs()
+        {
+            TestExchangeGivingSuccess();
+            var p = round.Players[0];
+            var unitsToGive = new Dictionary<UnitType, int> { [UnitType.Infantry] = -2 };
+            Assert.False(p.TryExchangeUnitsWithGarrison(unitsToGive));
+        }
+
+        [Test]
+        public void TestExchangeTakingSuccess()
+        {
+            TestExchangeGivingSuccess();
+            var p = round.Players[0];
+            var unitsToGive = new Dictionary<UnitType, int> { [UnitType.Infantry] = -1 };
+            Assert.True(p.TryExchangeUnitsWithGarrison(unitsToGive));
+        }
         #endregion
     }
 }

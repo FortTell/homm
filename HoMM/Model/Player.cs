@@ -90,24 +90,27 @@ namespace HoMM
         }
 
         //exchange units, positive amounts give to garrison, negative take from garrison
-        public bool ExchangeUnitsWithGarrison(Dictionary<UnitType, int> unitsToExchange)
+        public bool TryExchangeUnitsWithGarrison(Dictionary<UnitType, int> unitsToExchange)
         {
             if (!(map[Location].tileObject is Garrison))
                 return false;
             var g = (Garrison)map[Location].tileObject;
             if (g.Owner != this)
                 return false;
-            foreach (var kvp in unitsToExchange)
+
+            foreach (var stack in unitsToExchange)
             {
-                if (kvp.Value >= 0 && Army[kvp.Key] >= kvp.Value) 
+                if (stack.Value >= 0 && Army[stack.Key] >= stack.Value) 
                 {
-                    g.Army[kvp.Key] += kvp.Value;
-                    Army[kvp.Key] -= kvp.Value;
+                    if (!g.Army.ContainsKey(stack.Key))
+                        g.Army.Add(stack.Key, 0);
+                    g.Army[stack.Key] += stack.Value;
+                    Army[stack.Key] -= stack.Value;
                 }
-                else if (kvp.Value < 0 && g.Army[kvp.Key] >= -kvp.Value)
+                else if (stack.Value < 0 && g.Army.ContainsKey(stack.Key) && g.Army[stack.Key] >= -stack.Value)
                 {
-                    g.Army[kvp.Key] -= -kvp.Value;
-                    Army[kvp.Key] += -kvp.Value;
+                    g.Army[stack.Key] -= -stack.Value;
+                    Army[stack.Key] += -stack.Value;
                 }
                 else return false;
             }

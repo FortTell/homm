@@ -120,9 +120,10 @@ namespace HoMM
                         int amount = int.Parse(s.Substring(3));
                         return new ResourcePile(resource, amount, location);
                     }
-                case 'M':
+                case 'A':
                     {
-                        return CreateNeutralArmyFromString(s, location);
+                        var army = CreateArmyFromString(s);
+                        return new NeutralArmy(army, location);
                     }
                 case 'D':
                     {
@@ -131,6 +132,11 @@ namespace HoMM
                         var unitType = (UnitType)Enum.Parse(typeof(UnitType), recriutTypeName);
                         return new Dwelling(UnitFactory.CreateFromUnitType(unitType), location);
                     }
+                case 'G':
+                    {
+                        var guards = CreateArmyFromString(s);
+                        return new Garrison(guards, location);
+                    }
                 case '-':
                     return null;
                 default:
@@ -138,13 +144,21 @@ namespace HoMM
             }
         }
 
-        private NeutralArmy CreateNeutralArmyFromString(string s, Location location)
+        private Dictionary<UnitType, int> CreateArmyFromString(string s)
         {
-            var monsterTypeName = Enum.GetNames(typeof(UnitType))
-                .SingleOrDefault(res => res[0] == s[2]);
-            var unitType = (UnitType)Enum.Parse(typeof(UnitType), monsterTypeName);
-            int amount = int.Parse(s.Substring(3).Split('.')[0]);
-            return new NeutralArmy(new Dictionary<UnitType, int> { [unitType] = amount }, location);
+            var army = new Dictionary<UnitType, int>();
+            var armyS = s.Substring(2).Split('.');
+            foreach (var unitS in armyS)
+            {
+                var unitName = Enum.GetNames(typeof(UnitType))
+                    .SingleOrDefault(res => res[0] == unitS[0]);
+                var unitType = (UnitType)Enum.Parse(typeof(UnitType), unitName);
+                int amount = int.Parse(unitS.Substring(1));
+                if (!army.ContainsKey(unitType))
+                    army.Add(unitType, 0);
+                army[unitType] += amount;
+            }
+            return army;
         }
 
         public IEnumerator<Tile> GetEnumerator()

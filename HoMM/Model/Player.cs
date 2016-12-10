@@ -76,6 +76,8 @@ namespace HoMM
                 return false;
 
             var d = (Dwelling)map[Location].tileObject;
+            if (d.Owner != this)
+                return false;
             if (d.AvailableUnits < unitsToBuy)
                 return false;
             foreach (var kvp in d.Recruit.UnitCost)
@@ -86,6 +88,32 @@ namespace HoMM
             AddUnits(d.Recruit.UnitType, unitsToBuy);
             return true;
         }
+
+        //exchange units, positive amounts give to garrison, negative take from garrison
+        public bool ExchangeUnitsWithGarrison(Dictionary<UnitType, int> unitsToExchange)
+        {
+            if (!(map[Location].tileObject is Garrison))
+                return false;
+            var g = (Garrison)map[Location].tileObject;
+            if (g.Owner != this)
+                return false;
+            foreach (var kvp in unitsToExchange)
+            {
+                if (kvp.Value >= 0 && Army[kvp.Key] >= kvp.Value) 
+                {
+                    g.Army[kvp.Key] += kvp.Value;
+                    Army[kvp.Key] -= kvp.Value;
+                }
+                else if (kvp.Value < 0 && g.Army[kvp.Key] >= -kvp.Value)
+                {
+                    g.Army[kvp.Key] -= -kvp.Value;
+                    Army[kvp.Key] += -kvp.Value;
+                }
+                else return false;
+            }
+            return true;
+        }
+
 
         public override bool Equals(object obj)
         {

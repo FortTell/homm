@@ -33,7 +33,7 @@ namespace HoMM
                     .OrderByDescending(kvp => kvp.Value)
                     .Select(kvp => kvp.Key)
                     .ToList();
-                var targets = preferredEnemyOrder.Where(u => tempArmyDef[u] > 0);
+                var targets = preferredEnemyOrder.Where(u => tempArmyDef.ContainsKey(u) && tempArmyDef[u] > 0);
                 if (targets.Count() == 0)
                     break;
                 var target = targets.First();

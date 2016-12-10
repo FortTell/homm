@@ -49,6 +49,28 @@ namespace HexModelTesting
             Assert.That(obj.Owner == round.Players[0]);
         }
 
+        [Test]
+        public void TestGarrisonCaptureOnWin()
+        {
+            var p = round.Players[0];
+            p.AddUnits(UnitType.Infantry, 20);
+            p.AddUnits(UnitType.Ranged, 5);
+            round.UpdateTick(new Location[] { new Location(3, 3), new Location(0, 0) });
+            var garrison = (Garrison)round.Map[new Location(3, 3)].tileObject;
+            Assert.That(garrison.Owner == p);
+        }
+
+        [Test]
+        public void TestNeutralArmyRemovalOnWin()
+        {
+            var p = round.Players[0];
+            p.AddUnits(UnitType.Militia, 22);
+            p.AddUnits(UnitType.Ranged, 12);
+            p.AddUnits(UnitType.Infantry, 7);
+            round.UpdateTick(new Location[] { new Location(5, 2), new Location(0, 0) });
+            Assert.Null(round.Map[new Location(5, 2)].tileObject);
+        }
+
         #region player.TryBuyUnits testing
         [Test]
         public void PurchaseFailsWhenNotAtDwelling()
@@ -96,6 +118,10 @@ namespace HexModelTesting
             player.TryBuyUnits(5);
             Assert.That(player.Army[UnitType.Ranged] == 5);
         }
+        #endregion
+
+        #region player.ExchangeUnitsWithGarrison testing
+
         #endregion
     }
 }
